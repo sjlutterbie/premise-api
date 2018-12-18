@@ -1,0 +1,19 @@
+{
+  "name": "premise-api",
+  "version": "1.0.0",
+  "description": "A collaborative storytelling platform where users create and explore multiple stories and branching narratives, each growing from a shared central premise.",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sjlutterbie/premise-api.git"
+  },
+  "author": "Dr. Simon Lutterbie",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sjlutterbie/premise-api/issues"
+  },
+  "homepage": "https://github.com/sjlutterbie/premise-api#readme"
+}
