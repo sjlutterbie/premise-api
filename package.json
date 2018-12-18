@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "test": "mocha --recursive",
+    "test": "mocha --recursive --exit",
     "dev": "nodemon server.js"
   },
   "repository": {
