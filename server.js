@@ -26,7 +26,7 @@ app.get('/api/*', (req, res) => {
 let server;
 
 function runServer(databaseUrl, port = PORT) {
-  
+
   return new Promise((resolve, reject) => {
     const connectOpts = {useNewUrlParser: true};
     mongoose.connect(databaseUrl, connectOpts, err => {
