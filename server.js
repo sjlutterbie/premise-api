@@ -21,6 +21,53 @@ app.get('/api/*', (req, res) => {
   res.json({ok: true});
 });
 
-app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
+// Server Launch Functions
 
-module.exports = {app};
+let server;
+
+function runServer(databaseUrl, port = PORT) {
+  
+  return new Promise((resolve, reject) => {
+    const connectOpts = {useNewUrlParser: true};
+    mongoose.connect(databaseUrl, connectOpts, err => {
+      if (err) {
+        return reject(err);
+      }
+      server = app.listen(port, () => {
+        console.log(`Your app is listening on port ${port}`);
+        return resolve({status: 'Connected to server'});
+      })
+      .on('error', err => {
+        mongoose.disconnect();
+        reject(err);
+      });
+    });
+  });
+}
+
+function closeServer() {
+  return mongoose.disconnect().then(() => {
+    return new Promise((resolve, reject) => {
+      console.log('Closing server');
+      server.close( err => {
+        if (err) {
+          return reject(err);
+        }
+        resolve({status: 'Successfully closed server'});
+      });
+    })
+    .catch(err => {});
+  });
+}
+
+// If server.js is called directly, launch the server
+if (require.main === module) {
+  runServer(DATABASE_URL).catch(err => console.log(err));
+}
+
+
+module.exports = {
+  app,
+  runServer,
+  closeServer
+};
