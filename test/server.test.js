@@ -28,13 +28,13 @@ describe('API', () => {
 describe('Server functions', () => {
   
   describe('closeServer', () => {
-
+    
     it('Should be defined', () => {
       expect(closeServer).to.be.a('function');
     });
     
   });
-  
+
   describe('runServer', () => {
     
     afterEach(() => {
@@ -56,7 +56,5 @@ describe('Server functions', () => {
       let promObj = runServer(TEST_DATABASE_URL+'XXX');
       expect(promObj).to.eventually.throw();
     });
-  
-  
   });
 });

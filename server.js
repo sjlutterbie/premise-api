@@ -46,18 +46,15 @@ function runServer(databaseUrl, port = PORT) {
 }
 
 function closeServer() {
-  return mongoose.disconnect().then(() => {
-    return new Promise((resolve, reject) => {
-      console.log('Closing server');
-      server.close( err => {
+  
+  return mongoose.disconnect()
+    .then(() => {
+      server.close(err => {
         if (err) {
-          return reject(err);
+          return err;
         }
-        resolve({status: 'Successfully closed server'});
       });
-    })
-    .catch(err => {});
-  });
+    });
 }
 
 // If server.js is called directly, launch the server
