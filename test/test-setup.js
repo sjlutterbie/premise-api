@@ -86,7 +86,11 @@ before(function() {
     content: faker.lorem.sentences(5),
     isPremiseMoment: false
   };
-/*  
+
+
+// TODO: REACTIVATE AND COMPLETE THE FOLLOWING CODE
+
+  
   // Build objects in testDb
   return runServer(TEST_DATABASE_URL)
     .then(function(res) {
@@ -107,16 +111,40 @@ before(function() {
       );
     }).then(function(storyNetwork) {
       testIds.storyNetwork = storyNetwork._id;
-      
       // Create 'premise Moment'
       return Moment.create(
         {
           creator: testIds.userId,
-          content: testMoment.content,
-          isPremiseMoment: true,
-          premise
+          content: premiseMoment.content,
+          isPremiseMoment: premiseMoment.isPremiseMoment,
+          children: []
         }
       );
-    })
-*/
+    }).then(function(newPremiseMoment) {
+      testIds.premiseMoment = newPremiseMoment._id;
+      // Create 'regular' moment
+      return Moment.create (
+        {
+          creator: testIds.userId,
+          content: testMoment.content,
+          isPremiseMoment: testMoment.isPremiseMoment,
+          premise: testIds.premiseMoment,
+          lineages: [testIds.premiseMoment],
+          children: []
+        }
+      );
+    }).then(function(newMoment) {
+      testIds.regularMoment = newMoment._id;
+      return Moment.findByIdAndUpdate(testIds.premiseMoment,
+        {
+          children: [testIds.regularMoment]
+        }
+      ).exec();
+    }).then(function(res) {
+      console.log('Data objects created successfully');
+      return;
+    }).catch(function(err) {
+      console.log(err);
+      return err;
+    });
 });
