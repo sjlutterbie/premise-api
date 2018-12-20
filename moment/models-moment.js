@@ -46,6 +46,3 @@ const Moment = mongoose.model('Moment', momentSchema);
 module.exports = {
   Moment
 };
-
-
-
