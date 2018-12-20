@@ -3,7 +3,7 @@
 const mongoose = require('mongoose');
   mongoose.Promise = global.Promise;
   
-const premiseSetSchema = mongoose.Schema({
+const storyNetworkSchema = mongoose.Schema({
   name: {
     type: String,
     required: true
@@ -19,8 +19,8 @@ const premiseSetSchema = mongoose.Schema({
   }
 });
 
-const PremiseSet = mongoose.model('PremiseSet', premiseSetSchema);
+const StoryNetwork = mongoose.model('StoryNetwork', storyNetworkSchema);
 
 module.exports = {
-  PremiseSet
+  StoryNetwork
 };
