@@ -1,13 +1,6 @@
 'use strict';
 
-const chai = require('chai');
-  const expect = chai.expect;
-
-const faker = require('faker');
-
-const mongoose = require('mongoose');
-
-const { Moment } = require('../moment');
+const { Moment } = require('../../moment');
 
 describe('Moment schema', function() {
   
@@ -79,7 +72,9 @@ describe('Moment schema', function() {
     });
   });
   
-  it('Should be invalid if `lineages` is empty', function() {
+  it('Should be invalid if `isPremiseMoment === false` '
+     + ' && lineages` is empty', function() {
+    testMoment.isPremiseMoment = false;
     delete testMoment.lineages;
     let doc = new Moment(testMoment);
     doc.validate(function(err) {
@@ -87,7 +82,9 @@ describe('Moment schema', function() {
     });
   });
   
-  it('Should be invalid if `lineages.length === 0`', function() {
+  it('Should be invalid if `isPremiseMoment` is false'
+     + '&& `lineages.length === 0`', function() {
+    testMoment.isPremiseMoment = false;
     testMoment.lineages = [];
     let doc = new Moment(testMoment);
     doc.validate(function(err){
@@ -102,5 +99,4 @@ describe('Moment schema', function() {
       expect(err.errors.children).to.exist;
     });
   });
-
 });

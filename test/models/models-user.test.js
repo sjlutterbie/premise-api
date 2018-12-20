@@ -1,13 +1,6 @@
 'use strict';
 
-const chai = require('chai');
-  const expect = chai.expect;
-
-const faker = require('faker');
-
-const mongoose = require('mongoose');
-
-const { User, EndpointsObject } = require('../user');
+const { User, EndpointsObject } = require('../../user');
 
 describe('User schema', function() {
   

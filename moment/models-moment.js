@@ -22,14 +22,16 @@ const momentSchema = mongoose.Schema({
   premise: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Moment',
-    required: !this.isPremiseMoment
+    required: function() { return !this.isPremiseMoment}
   },
   lineages: {
     type: [
       [mongoose.Schema.Types.ObjectId]
     ],
-    required: true,
-    validate: v => v.length > 0,
+    required: function() { return !this.isPremiseMoment},
+    validate: function(lineages) {
+      return (this.isPremiseMoment || lineages.length > 0); 
+    },
     // Mongoose defaults to empty array, breaking 'required' validation, so:
     default: undefined
   },
