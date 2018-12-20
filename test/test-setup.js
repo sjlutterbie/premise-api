@@ -77,8 +77,17 @@ before(function() {
     isPublic: Math.random() < .5 ? true : false
   };
   
+  function buildMoment(isPremiseMoment = false) {
+    return {
+      content: faker.random.alphaNumeric(100),
+      isPremiseMoment: isPremiseMoment,
+      lineages: [],
+      children: []
+    };
+  }
+  
   global.premiseMoment = {
-    content: faker.lorem.sentences(5),
+    content: faker.random.alphaNumeric(100),
     isPremiseMoment: true
   };
   
@@ -97,7 +106,8 @@ before(function() {
       return User.create(
         {
           username: testUser.username,
-          password: testUser.password
+          password: testUser.password,
+          email: testUser.email
         }  
       );
     }).then(function(user) {
@@ -112,22 +122,26 @@ before(function() {
     }).then(function(storyNetwork) {
       testIds.storyNetwork = storyNetwork._id;
       // Create 'premise Moment'
+      console.log('Creating premise Moment...');
+      const tempMoment = buildMoment(true);
       return Moment.create(
         {
           creator: testIds.userId,
-          content: premiseMoment.content,
-          isPremiseMoment: premiseMoment.isPremiseMoment,
+          content: tempMoment.content,
+          isPremiseMoment: tempMoment.isPremiseMoment,
           children: []
         }
       );
     }).then(function(newPremiseMoment) {
       testIds.premiseMoment = newPremiseMoment._id;
       // Create 'regular' moment
-      return Moment.create (
+      console.log('Creating a regular moment...')
+      const tempMoment = buildMoment();
+      return Moment.create(
         {
           creator: testIds.userId,
-          content: testMoment.content,
-          isPremiseMoment: testMoment.isPremiseMoment,
+          content: tempMoment.content,
+          isPremiseMoment: tempMoment.isPremiseMoment,
           premise: testIds.premiseMoment,
           lineages: [testIds.premiseMoment],
           children: []
@@ -147,4 +161,24 @@ before(function() {
       console.log(err);
       return err;
     });
+});
+
+after( function() {
+  
+  let userProm = User.deleteMany({}).exec();
+  let storyNetworkProm = StoryNetwork.deleteMany({}).exec();
+  let momentProm = Moment.deleteMany({}).exec();
+  
+  // IS THIS ACTUALLY EXECUTING?
+  
+  Promise.all([userProm, storyNetworkProm, momentProm])
+    .then(function(res) {
+      console.log('Test data successfully removed');
+      return closeServer();
+    })
+    .catch(function(err) {
+      console.log(err);
+      return err;
+    });
+  
 });

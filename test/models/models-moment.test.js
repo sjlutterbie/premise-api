@@ -82,7 +82,9 @@ describe('Moment schema', function() {
     });
   });
   
-  it('Should be invalid if `lineages.length === 0`', function() {
+  it('Should be invalid if `isPremiseMoment` is false'
+     + '&& `lineages.length === 0`', function() {
+    testMoment.isPremiseMoment = false;
     testMoment.lineages = [];
     let doc = new Moment(testMoment);
     doc.validate(function(err){
