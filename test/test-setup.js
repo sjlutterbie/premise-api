@@ -26,9 +26,7 @@ global.jwt = require('jsonwebtoken');
 require('dotenv').config();
 const { app, runServer, closeServer } = require('../server');
   global.app = app;
-  global.runServer = runServer;
-  global.closeServer = closeServer;
-  
+
 const { PORT, TEST_DATABASE_URL, JWT_SECRET } = require('../config');
   global.TEST_DATABASE_URL = TEST_DATABASE_URL;
   
@@ -39,3 +37,49 @@ global.faker = require('faker');
 const { User } = require('../user');
 const { StoryNetwork } = require('../storyNetwork');
 const { Moment } = require('../moment');
+
+// Server setup and data object creation
+before(function() {
+  
+  // Testing constants
+  global.token = jwt.sign(
+    {
+      user: faker.random.alphaNumeric(10)
+    },
+    JWT_SECRET,
+    {
+      algorithm: 'HS256',
+      expiresIn: '1d'
+    }
+  );
+  
+  global.expiredToken = jwt.sign(
+    {
+      user: faker.random.alphaNumeric(10),
+      exp: (Math.floor(Date.now()/1000) - 10) // Expired 10 seconds ago
+    },
+    JWT_SECRET,
+    {
+      algorithm: 'HS256'
+    }
+  );
+  
+  global.testIds = {};
+  
+  global.testUser = {
+   username: faker.random.alphaNumeric(10),
+   password: faker.random.alphaNumeric(10),
+   email: faker.internet.email()
+  };
+  
+  global.testStoryNetwork = {
+    name: faker.random.alphaNumeric(10),
+    isPublic: Math.random() < .5 ? true : false
+  };
+  
+  global.testMoment = {
+    content: faker.lorem.sentences(5),
+    isPremiseMoment: false
+  };
+  
+});
