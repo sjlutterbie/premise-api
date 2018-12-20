@@ -9,7 +9,14 @@ mongoose.Promise = global.Promise;
 require('dotenv').config();
 const { PORT, DATABASE_URL, JWT_SECRET } = require('./config');
 
+
+// MIDDLEWARE
+
 const cors = require('cors');
+
+// ROUTES
+const { router: userRouter } = require('./user/router-user');
+  app.use('/api/user', userRouter);
 
 app.use(
   cors({
@@ -21,7 +28,7 @@ app.get('/api/*', (req, res) => {
   res.json({ok: true});
 });
 
-// Server Launch Functions
+// SERVER LAUNCH FUNCTIONS
 
 let server;
 
