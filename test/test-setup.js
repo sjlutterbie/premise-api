@@ -96,10 +96,6 @@ before(function() {
     isPremiseMoment: false
   };
 
-
-// TODO: REACTIVATE AND COMPLETE THE FOLLOWING CODE
-
-  
   // Build objects in testDb
   return runServer(TEST_DATABASE_URL)
     .then(function(res) {
@@ -170,8 +166,6 @@ after( function() {
   const userProm = User.deleteMany({}).exec();
   const storyNetworkProm = StoryNetwork.deleteMany({}).exec();
   const momentProm = Moment.deleteMany({}).exec();
-  
-  // IS THIS ACTUALLY EXECUTING?
   
   Promise.all([userProm, storyNetworkProm, momentProm])
     .then(function(res) {
