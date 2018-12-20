@@ -11,10 +11,8 @@ describe('User schema', function() {
     testUser = {
       username: faker.random.alphaNumeric(10),
       password: faker.random.alphaNumeric(10),
-      name: {
-        fName: faker.random.alphaNumeric(10),
-        lName: faker.random.alphaNumeric(10)
-      },
+      firstName: faker.random.alphaNumeric(10),
+      lirstName: faker.random.alphaNumeric(10),
       email: faker.internet.email(),
       storyNetworks: [
         new mongoose.Types.ObjectId(),

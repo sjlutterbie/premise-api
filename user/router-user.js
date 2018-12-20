@@ -27,9 +27,24 @@ router.post('/', jsonParser, (req, res) => {
     });
   }
   
-    // Required fields: username, password, email
-  
+  // Check for non-string fields (primary level)
+  const stringFields = ['username', 'password', 'email',
+                        'firstName', 'lastName'];
+  const nonStringField = stringFields.find(
+    field => field in req.body && typeof req.body[field] != 'string'
+    );
+
   // Handle non-string fields
+  if (nonStringField){
+    return res.status(422).json({
+      code: 422,
+      reason: 'ValidationError',
+      message: 'Non-string field',
+      location: nonStringField
+    });
+  }
+
+  // Check for non-trimmed fields
   
   // Handle non-trimmed fields
   
