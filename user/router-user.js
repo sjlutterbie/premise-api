@@ -44,9 +44,21 @@ router.post('/', jsonParser, (req, res) => {
     });
   }
 
-  // Check for non-trimmed fields
+  // Check for non-trimmed  (username, password, email)
+  const trimmedFields = ['username', 'password', 'email'];
+  const nonTrimmedField = trimmedFields.find(
+    field => field in req.body && req.body[field] != req.body[field].trim()
+  );
   
   // Handle non-trimmed fields
+  if (nonTrimmedField) {
+    return res.status(422).json({
+      code: 422,
+      reason: 'ValidationError',
+      message: `${nonTrimmedField} cannot start or end with whitespace`,
+      location: nonTrimmedField
+    });
+  }
   
   // Enforce min & max field lengths
   

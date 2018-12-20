@@ -109,6 +109,45 @@ describe('User Router', function() {
         )
         .should.eventually.have.status(422);
     });
+    
+    it('Should reject requests with a non-trimmed username', function() {
+      return chai.request(app)
+        .post('/api/user')
+        .send(
+          {
+            username: ' ' + faker.random.alphaNumeric(10)+ '   ',
+            password: faker.random.alphaNumeric(10),
+            email: faker.internet.email()
+          }  
+        )
+        .should.eventually.have.status(422);
+    });
+    
+    it('Should reject requests with a non-trimmed password', function() {
+      return chai.request(app)
+        .post('/api/user')
+        .send(
+          {
+            username: faker.random.alphaNumeric(10),
+            password: ' ' + faker.random.alphaNumeric(10) + '   ',
+            email: faker.internet.email()
+          }  
+        )
+        .should.eventually.have.status(422);
+    });
+    
+    it('Should reject requests with a non-trimmed email', function() {
+      return chai.request(app)
+        .post('/api/user')
+        .send(
+          {
+            username: faker.random.alphaNumeric(10),
+            password: faker.random.alphaNumeric(10),
+            email: ' ' + faker.internet.email() + '   '
+          }  
+        )
+        .should.eventually.have.status(422);
+    });
 
   });
 });
