@@ -79,7 +79,9 @@ describe('Moment schema', function() {
     });
   });
   
-  it('Should be invalid if `lineages` is empty', function() {
+  it('Should be invalid if `isPremiseMoment === false` '
+     + ' && lineages` is empty', function() {
+    testMoment.isPremiseMoment = false;
     delete testMoment.lineages;
     let doc = new Moment(testMoment);
     doc.validate(function(err) {
@@ -102,5 +104,4 @@ describe('Moment schema', function() {
       expect(err.errors.children).to.exist;
     });
   });
-
 });
