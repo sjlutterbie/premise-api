@@ -8,12 +8,12 @@ const faker = require('faker');
 
 const mongoose = require('mongoose');
 
-const { PremiseSet } = require('../premiseSet');
+const { StoryNetwork } = require('../storyNetwork');
 
-describe('premiseSet', function() {
+describe('StoryNetwork mongo model', function() {
   
   it('Should be invalid if `name` is empty', function() {
-    let doc = new PremiseSet({
+    let doc = new StoryNetwork({
       isPublic: Math.random() < .5 ? true : false,
       creator: faker.random.uuid()
     });
@@ -24,7 +24,7 @@ describe('premiseSet', function() {
   });
   
   it('Should be invalid if `isPublic` is empty', function() {
-    let doc = new PremiseSet({
+    let doc = new StoryNetwork({
       name: faker.random.alphaNumeric(10),
       creator: faker.random.uuid()
     });
@@ -35,7 +35,7 @@ describe('premiseSet', function() {
   });
   
   it('Should be invalid if `creator` is empty', function() {
-    let doc = new PremiseSet({
+    let doc = new StoryNetwork({
       name: faker.random.alphaNumeric(10),
       isPublic: Math.random() < .5 ? true : false,
     });
@@ -46,7 +46,7 @@ describe('premiseSet', function() {
   });
   
   it('Should be valid when all required fields exist', function() {
-    let doc = new PremiseSet({
+    let doc = new StoryNetwork({
       name: faker.random.alphaNumeric(10),
       isPublic: Math.random() < .5 ? true : false,
       creator: new mongoose.Types.ObjectId()
