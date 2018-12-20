@@ -77,9 +77,46 @@ before(function() {
     isPublic: Math.random() < .5 ? true : false
   };
   
+  global.premiseMoment = {
+    content: faker.lorem.sentences(5),
+    isPremiseMoment: true
+  };
+  
   global.testMoment = {
     content: faker.lorem.sentences(5),
     isPremiseMoment: false
   };
-  
+/*  
+  // Build objects in testDb
+  return runServer(TEST_DATABASE_URL)
+    .then(function(res) {
+      return User.create(
+        {
+          username: testUser.username,
+          password: testUser.password
+        }  
+      );
+    }).then(function(user) {
+      testIds.userId = user._id;
+      return StoryNetwork.create(
+        {
+          name: testStoryNetwork.name,
+          isPublic: testStoryNetwork.isPublic,
+          creator: testIds.userId
+        }  
+      );
+    }).then(function(storyNetwork) {
+      testIds.storyNetwork = storyNetwork._id;
+      
+      // Create 'premise Moment'
+      return Moment.create(
+        {
+          creator: testIds.userId,
+          content: testMoment.content,
+          isPremiseMoment: true,
+          premise
+        }
+      );
+    })
+*/
 });
