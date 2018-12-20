@@ -165,9 +165,11 @@ before(function() {
 
 after( function() {
   
-  let userProm = User.deleteMany({}).exec();
-  let storyNetworkProm = StoryNetwork.deleteMany({}).exec();
-  let momentProm = Moment.deleteMany({}).exec();
+  console.log('Deleting data items...');
+  
+  const userProm = User.deleteMany({}).exec();
+  const storyNetworkProm = StoryNetwork.deleteMany({}).exec();
+  const momentProm = Moment.deleteMany({}).exec();
   
   // IS THIS ACTUALLY EXECUTING?
   
@@ -175,10 +177,5 @@ after( function() {
     .then(function(res) {
       console.log('Test data successfully removed');
       return closeServer();
-    })
-    .catch(function(err) {
-      console.log(err);
-      return err;
     });
-  
 });
