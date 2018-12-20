@@ -28,7 +28,7 @@ const momentSchema = mongoose.Schema({
     type: [
       [mongoose.Schema.Types.ObjectId]
     ],
-    required: true,
+    required: !this.isPremiseMoment,
     validate: v => v.length > 0,
     // Mongoose defaults to empty array, breaking 'required' validation, so:
     default: undefined
