@@ -45,5 +45,22 @@ describe('Moment schema', function() {
       expect(err.errors.creator).to.exist;
     });
   });
+  
+  it('Should be invalid if `content` is empty', function() {
+    delete testMoment.content;
+    let doc = new Moment(testMoment);
+    doc.validate(function(err) {
+      expect(err.errors.content).to.exist;
+    });
+  });
+  
+  it('Should be invalid if `content.length > 200', function() {
+    testMoment.content = faker.random.alphaNumeric(201);
+    console.log(testMoment);
+    let doc = new Moment(testMoment);
+    doc.validate(function(err) {
+      expect(err.errors.content).to.exist;
+    });
+  });
 
 });
