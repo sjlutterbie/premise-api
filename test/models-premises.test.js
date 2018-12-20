@@ -19,7 +19,7 @@ describe('premiseSet', function() {
     });
     
     doc.validate(function(err) {
-      expect(err.errors).to.exist;
+      expect(err.errors.name).to.exist;
     });
   });
   
@@ -30,7 +30,7 @@ describe('premiseSet', function() {
     });
     
     doc.validate(function(err) {
-      expect(err.errors).to.exist;
+      expect(err.errors.isPublic).to.exist;
     });
   });
   
@@ -41,7 +41,7 @@ describe('premiseSet', function() {
     });
     
     doc.validate(function(err) {
-      expect(err.errors).to.exist;
+      expect(err.errors.creator).to.exist;
     });
   });
   
