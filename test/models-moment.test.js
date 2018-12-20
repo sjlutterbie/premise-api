@@ -2,8 +2,7 @@
 
 const chai = require('chai');
   const expect = chai.expect;
-  const should = chai.should();
-  
+
 const faker = require('faker');
 
 const mongoose = require('mongoose');
@@ -20,7 +19,7 @@ describe('Moment schema', function() {
       creator: new mongoose.Types.ObjectId(),
       content: faker.lorem.sentences(5),
       premise: new mongoose.Types.ObjectId(),
-      isPremiseMoment: Math.random() < .5 ? true : false,
+      isPremiseMoment: false,
       lineages: [
         [
           new mongoose.Types.ObjectId(),
@@ -56,10 +55,51 @@ describe('Moment schema', function() {
   
   it('Should be invalid if `content.length > 200', function() {
     testMoment.content = faker.random.alphaNumeric(201);
-    console.log(testMoment);
     let doc = new Moment(testMoment);
     doc.validate(function(err) {
       expect(err.errors.content).to.exist;
+    });
+  });
+  
+  it('Should be invalid if `isPremiseMoment` is empty', function() {
+    delete testMoment.isPremiseMoment;
+    let doc = new Moment(testMoment);
+    doc.validate(function(err) {
+      expect(err.errors.isPremiseMoment).to.exist;
+    });
+  });
+  
+  it('Should be invalid if `isPremiseMoment === false` '
+     + '&& `premise` is empty',function() {
+    testMoment.isPremiseMoment = false;
+    delete testMoment.premise;
+    let doc = new Moment(testMoment);
+    doc.validate(function(err) {
+      expect(err.errors.premise).to.exist;
+    });
+  });
+  
+  it('Should be invalid if `lineages` is empty', function() {
+    delete testMoment.lineages;
+    let doc = new Moment(testMoment);
+    doc.validate(function(err) {
+      expect(err.errors.lineages).to.exist;
+    });
+  });
+  
+  it('Should be invalid if `lineages.length === 0`', function() {
+    testMoment.lineages = [];
+    let doc = new Moment(testMoment);
+    doc.validate(function(err){
+      expect(err.errors.lineages).to.exist;
+    });
+  });
+  
+  it('Should be invalid if `children` is empty', function() {
+    delete testMoment.children;
+    let doc = new Moment(testMoment);
+    doc.validate(function(err) {
+      expect(err.errors.children).to.exist;
     });
   });
 

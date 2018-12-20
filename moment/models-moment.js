@@ -14,20 +14,31 @@ const momentSchema = mongoose.Schema({
     required: true,
     trim: true,
     maxlength: 200
+  },
+  isPremiseMoment: {
+    type: Boolean,
+    required: true
+  },
+  premise: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Moment',
+    required: !this.isPremiseMoment
+  },
+  lineages: {
+    type: [
+      [mongoose.Schema.Types.ObjectId]
+    ],
+    required: true,
+    validate: v => v.length > 0,
+    // Mongoose defaults to empty array, breaking 'required' validation, so:
+    default: undefined
+  },
+  children: {
+    type: [mongoose.Schema.Types.ObjectId],
+    required: true,
+    // Mongoose defaults to empty array, breaking 'required' validation, so:
+    default: undefined
   }
-  
-  
-  
-/*
-creator: ref to User._id REQ
-content: string REQ
-premise: ref to Premise._id REQ
-isPremiseMoment: boolean REQ
-lineages: array of arrays REQ
-  a lineage: array [refs to Moment._id]
-children: array [refs to Moment._id]
-*/
-  
 });
 
 const Moment = mongoose.model('Moment', momentSchema);
