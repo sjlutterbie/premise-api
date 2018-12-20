@@ -1,5 +1,5 @@
 'use strict';
 
-const { User } = require('./models-user');
+const { User, EndpointsObject } = require('./models-user');
 
-module.exports = { User };
+module.exports = { User, EndpointsObject };

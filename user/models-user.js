@@ -5,6 +5,20 @@ const mongoose = require('mongoose');
   
 const bcrypt = require('bcryptjs');  
   
+// Helper Schemas
+
+const endpointsObject = new mongoose.Schema({
+  storyNetwork: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'StoryNetwork',
+    required: true
+  },
+  endpoints: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Moment'
+  }]
+});
+  
 const userSchema = mongoose.Schema({
   username: {
     type: String,
@@ -13,18 +27,22 @@ const userSchema = mongoose.Schema({
   password: {
     type: String,
     required: true
-  }
-  
-  // username: string required
-  // password: string required (bcrypt)
-  // name: object
-    // fName: string
-    // lName: string
-  // email: string required
-  // storyNetworks: array [mongo refs: storyNetworks] required
-  // endpoints: object required
-    // {storyNetwork_id: [mongo refs to Moment]
-  
+  },
+  name: {
+    fName: {type: String},
+    lName: {type: String}
+  },
+  email: {
+    type: String,
+    required: true
+  },
+  storyNetworks: {
+    type: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'StoryNetwork'
+    }]
+  },
+  endpointsList: [endpointsObject]
 });
 
 userSchema.methods.validatePassword = function(password) {
@@ -37,6 +55,9 @@ userSchema.methods.hashPassword = function(password) {
 
 const User = mongoose.model('User', userSchema);
 
+// Created for testing purposes only
+const EndpointsObject = mongoose.model('EndPointObject', endpointsObject);
+
 module.exports = {
-  User
+  User, EndpointsObject
 };
