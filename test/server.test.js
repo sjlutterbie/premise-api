@@ -1,8 +1,5 @@
 'use strict';
 
-require('dotenv').config();
-const { PORT, TEST_DATABASE_URL, JWT_SECRET } = require('../config');
-
 const chai = require('chai');
   const expect = chai.expect;
   const should = chai.should();
@@ -12,6 +9,9 @@ const chaiAsPromised = require('chai-as-promised');
   chai.use(chaiAsPromised);
   
 const faker = require('faker');
+
+require('dotenv').config();
+const { PORT, TEST_DATABASE_URL, JWT_SECRET } = require('../config');
 
 const {app, runServer, closeServer} = require('../server');
 
