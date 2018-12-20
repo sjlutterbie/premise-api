@@ -1,13 +1,6 @@
 'use strict';
 
-const chai = require('chai');
-  const expect = chai.expect;
-
-const faker = require('faker');
-
-const mongoose = require('mongoose');
-
-const { Moment } = require('../moment');
+const { Moment } = require('../../moment');
 
 describe('Moment schema', function() {
   

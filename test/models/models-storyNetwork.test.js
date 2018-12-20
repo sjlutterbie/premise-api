@@ -1,13 +1,6 @@
 'use strict';
 
-const chai = require('chai');
-  const expect = chai.expect;
-
-const faker = require('faker');
-
-const mongoose = require('mongoose');
-
-const { StoryNetwork } = require('../storyNetwork');
+const { StoryNetwork } = require('../../storyNetwork');
 
 describe('StoryNetwork mongo model', function() {
   
