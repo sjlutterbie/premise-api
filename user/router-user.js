@@ -134,9 +134,9 @@ router.post('/', jsonParser, (req, res) => {
           return res.status(err.code).json(err);
         }
         // Keep non-validation errors private
+        console.log(err);
         res.status(500).json({code: 500, message: 'Internal server error'});
       });
 });
-
 
 module.exports = {router};

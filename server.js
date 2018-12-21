@@ -13,6 +13,8 @@ const { PORT, DATABASE_URL, JWT_SECRET } = require('./config');
 // MIDDLEWARE
 
 const cors = require('cors');
+const morgan = require('morgan');
+
 
 // ROUTES
 const { router: userRouter } = require('./user/router-user');
@@ -23,6 +25,8 @@ app.use(
     origin: "*"
   })
 );
+
+app.use(morgan('common'));
 
 app.get('/api/*', (req, res) => {
   res.json({ok: true});
