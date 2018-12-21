@@ -8,8 +8,6 @@ const router = express.Router();
 
 const jsonParser = bodyParser.json();
 
-module.exports = {router};
-
 // POST: Register new user
 router.post('/', jsonParser, (req, res) => {
   
@@ -97,13 +95,49 @@ router.post('/', jsonParser, (req, res) => {
           + 'characters long'
     });
   }
-
-  // Confirm username not taken
   
-  // Confirm email address not taken
-  
-  // Sucessful response (for testing)
-  return res.status(200).json({message: 'Submission complete'});
-  
+  // Store varialbes
+  let {username, password, email, firstName = '', lastName = ''} = req.body;
+    firstName = firstName.trim();
+    lastName = lastName.trim();
+    email = email.trim();
+    // NOTE: username & password already trimmed
+    
+  // Check username & email not taken; if not, create user
+  return User.find({$or:[{username}, {email}]})
+    .count()
+    .then(count => {
+      if( count > 0) {
+        return Promise.reject({
+          code: 422,
+          reason: 'ValidationError',
+          message: 'Username or email address already taken',
+          location: 'username or email'
+        });
+      }
+      return User.hashPassword(password);
+    })
+      .then(hash => {
+        return User.create({
+          username,
+          password: hash,
+          email,
+          firstName,
+          lastName
+        });
+      })
+      .then( user => {
+        return res.status(201).json(user);
+      })
+      .catch( err => {
+        if (err.reason === 'ValidationError') {
+          return res.status(err.code).json(err);
+        }
+        // Keep non-validation errors private
+        res.status(500).json({code: 500, message: 'Internal server error'});
+      });
   
 });
+
+
+module.exports = {router};
