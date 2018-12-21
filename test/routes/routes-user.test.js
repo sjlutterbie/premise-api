@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 const {router: userRouter } = require('../../user');
 
@@ -227,6 +227,25 @@ describe('User Router', function() {
         .post('/api/user')
         .send(tempUser)
         .should.eventually.have.status(422);
+    });
+    
+    it('Should accept a valid request', function() {
+      const testUser = {
+        username: faker.random.alphaNumeric(10),
+        password: faker.random.alphaNumeric(10),
+        email: faker.internet.email(),
+        firstName: faker.random.alphaNumeric(10),
+        lastName: faker.random.alphaNumeric(10)
+      };
+      return chai.request(app)
+        .post('/api/user')
+        .send(testUser)
+        .then(function(res) {
+          expect(res).to.have.status(201);
+          expect(res.body).to.have.keys(
+            ['username', 'email', 'firstName', 'lastName', 'id']
+          );
+        });
     });
   });
 });

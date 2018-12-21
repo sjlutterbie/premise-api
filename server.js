@@ -17,8 +17,10 @@ const morgan = require('morgan');
 
 
 // ROUTES
-const { router: userRouter } = require('./user/router-user');
+const { router: userRouter } = require('./user');
   app.use('/api/user', userRouter);
+const { router: storyNetworkRouter } = require('./storyNetwork');
+  app.use('/api/story-network', storyNetworkRouter);
 
 app.use(
   cors({

@@ -96,7 +96,7 @@ router.post('/', jsonParser, (req, res) => {
     });
   }
   
-  // Store varialbes
+  // Store variables
   let {username, password, email, firstName = '', lastName = ''} = req.body;
     firstName = firstName.trim();
     lastName = lastName.trim();
