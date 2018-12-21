@@ -127,7 +127,7 @@ router.post('/', jsonParser, (req, res) => {
         });
       })
       .then( user => {
-        return res.status(201).json(user);
+        return res.status(201).json(user.serialize());
       })
       .catch( err => {
         if (err.reason === 'ValidationError') {
@@ -136,7 +136,6 @@ router.post('/', jsonParser, (req, res) => {
         // Keep non-validation errors private
         res.status(500).json({code: 500, message: 'Internal server error'});
       });
-  
 });
 
 

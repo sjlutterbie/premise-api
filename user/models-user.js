@@ -43,6 +43,16 @@ const userSchema = mongoose.Schema({
   endpointsList: [endpointsObject]
 });
 
+userSchema.methods.serialize = function() {
+  return {
+    username: this.username || '',
+    email: this.email || '',
+    firstName: this.firstName || '',
+    lastName: this.lastName || '',
+    id: this._id
+  };
+};
+
 userSchema.methods.validatePassword = function(password) {
   return bcrypt.compare(password, this.password);
 };
