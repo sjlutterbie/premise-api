@@ -43,6 +43,18 @@ const momentSchema = mongoose.Schema({
   }
 });
 
+momentSchema.methods.serialize = function() {
+  return {
+    creator: this.creator,
+    content: this.content,
+    isPremiseMoment: this.isPremiseMoment,
+    premise: this.premise || null,
+    lineages: this.lineages || [],
+    children: this.children || [],
+    id: this._id
+  };
+};
+
 const Moment = mongoose.model('Moment', momentSchema);
 
 module.exports = {
