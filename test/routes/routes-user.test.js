@@ -148,6 +148,66 @@ describe('User Router', function() {
         )
         .should.eventually.have.status(422);
     });
+    
+    it('Should reject a request with too short a password', function() {
+      // Min password length: 10
+      return chai.request(app)
+        .post('/api/user')
+        .send(
+          {
+            username: faker.random.alphaNumeric(10),
+            password: faker.random.alphaNumeric(9),
+            email: faker.internet.email()
+          }
+        )
+        .should.eventually.have.status(422);
+    });
+    
+    it('Should reject a request with too long a password', function() {
+      // Max password length: 71
+      return chai.request(app)
+        .post('/api/user')
+        .send(
+          {
+            username: faker.random.alphaNumeric(10),
+            password: faker.random.alphaNumeric(72),
+            email: faker.internet.email()
+          }
+        )
+        .should.eventually.have.status(422);
+    });
+    
+    it('Should reject a request with too short a username', function() {
+      // Min username length: 1
+      return chai.request(app)
+        .post('/api/user')
+        .send(
+          {
+            username: '',
+            password: faker.random.alphaNumeric(10),
+            email: faker.internet.email()
+          }
+        )
+        .should.eventually.have.status(422);
+    });
+    
+    it('Should reject a request with too short an email', function() {
+      // Min email length: 1
+      return chai.request(app)
+        .post('/api/user')
+        .send(
+          {
+            username: faker.random.alphaNumeric(10),
+            password: faker.random.alphaNumeric(10),
+            email: ''
+          }
+        )
+        .should.eventually.have.status(422);
+    });
+    
 
+
+    
+    
   });
 });
