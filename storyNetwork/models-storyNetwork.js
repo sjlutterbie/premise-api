@@ -19,6 +19,15 @@ const storyNetworkSchema = mongoose.Schema({
   }
 });
 
+storyNetworkSchema.methods.serialize = function() {
+  return {
+    name: this.name,
+    isPublic: this.isPublic,
+    creator: this.creator,
+    id: this._id
+  };
+};
+
 const StoryNetwork = mongoose.model('StoryNetwork', storyNetworkSchema);
 
 module.exports = {
