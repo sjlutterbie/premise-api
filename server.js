@@ -21,6 +21,8 @@ const { router: userRouter } = require('./user');
   app.use('/api/user', userRouter);
 const { router: storyNetworkRouter } = require('./storyNetwork');
   app.use('/api/story-network', storyNetworkRouter);
+const { router: momentRouter } = require('./moment');
+  app.use('/api/moment', momentRouter);
 
 app.use(
   cors({

@@ -24,24 +24,31 @@ const momentSchema = mongoose.Schema({
     ref: 'Moment',
     required: function() { return !this.isPremiseMoment}
   },
-  lineages: {
-    type: [
-      [mongoose.Schema.Types.ObjectId]
-    ],
+  lineage: {
+    type: [mongoose.Schema.Types.ObjectId],
     required: function() { return !this.isPremiseMoment},
-    validate: function(lineages) {
-      return (this.isPremiseMoment || lineages.length > 0); 
+    validate: function(lineage) {
+      return (this.isPremiseMoment || lineage.length > 0); 
     },
     // Mongoose defaults to empty array, breaking 'required' validation, so:
     default: undefined
   },
   children: {
-    type: [mongoose.Schema.Types.ObjectId],
-    required: true,
-    // Mongoose defaults to empty array, breaking 'required' validation, so:
-    default: undefined
+    type: [mongoose.Schema.Types.ObjectId]
   }
 });
+
+momentSchema.methods.serialize = function() {
+  return {
+    creator: this.creator,
+    content: this.content,
+    isPremiseMoment: this.isPremiseMoment,
+    premise: this.premise || null,
+    lineage: this.lineages || [],
+    children: this.children || [],
+    id: this._id
+  };
+};
 
 const Moment = mongoose.model('Moment', momentSchema);
 
