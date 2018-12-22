@@ -36,10 +36,7 @@ const momentSchema = mongoose.Schema({
     default: undefined
   },
   children: {
-    type: [mongoose.Schema.Types.ObjectId],
-    required: true,
-    // Mongoose defaults to empty array, breaking 'required' validation, so:
-    default: undefined
+    type: [mongoose.Schema.Types.ObjectId]
   }
 });
 

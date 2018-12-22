@@ -91,12 +91,4 @@ describe('Moment schema', function() {
       expect(err.errors.lineages).to.exist;
     });
   });
-  
-  it('Should be invalid if `children` is empty', function() {
-    delete testMoment.children;
-    let doc = new Moment(testMoment);
-    doc.validate(function(err) {
-      expect(err.errors.children).to.exist;
-    });
-  });
 });
