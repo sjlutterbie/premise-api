@@ -13,15 +13,9 @@ describe('Moment schema', function() {
       content: faker.lorem.sentences(5),
       premise: new mongoose.Types.ObjectId(),
       isPremiseMoment: false,
-      lineages: [
-        [
-          new mongoose.Types.ObjectId(),
-          new mongoose.Types.ObjectId()
-        ],
-        [
-          new mongoose.Types.ObjectId(),
-          new mongoose.Types.ObjectId()
-        ]
+      lineage: [
+        new mongoose.Types.ObjectId(),
+        new mongoose.Types.ObjectId()
       ],
       children: [
         new mongoose.Types.ObjectId(),
@@ -73,22 +67,22 @@ describe('Moment schema', function() {
   });
   
   it('Should be invalid if `isPremiseMoment === false` '
-     + ' && lineages` is empty', function() {
+     + ' && lineage` is empty', function() {
     testMoment.isPremiseMoment = false;
-    delete testMoment.lineages;
+    delete testMoment.lineage;
     let doc = new Moment(testMoment);
     doc.validate(function(err) {
-      expect(err.errors.lineages).to.exist;
+      expect(err.errors.lineage).to.exist;
     });
   });
   
   it('Should be invalid if `isPremiseMoment` is false'
-     + '&& `lineages.length === 0`', function() {
+     + '&& `lineage.length === 0`', function() {
     testMoment.isPremiseMoment = false;
-    testMoment.lineages = [];
+    testMoment.lineage = [];
     let doc = new Moment(testMoment);
     doc.validate(function(err){
-      expect(err.errors.lineages).to.exist;
+      expect(err.errors.lineage).to.exist;
     });
   });
 });

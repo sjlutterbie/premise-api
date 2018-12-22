@@ -81,7 +81,7 @@ before(function() {
     return {
       content: faker.random.alphaNumeric(100),
       isPremiseMoment: isPremiseMoment,
-      lineages: [],
+      lineage: [],
       children: []
     };
   }
@@ -139,7 +139,7 @@ before(function() {
           content: tempMoment.content,
           isPremiseMoment: tempMoment.isPremiseMoment,
           premise: testIds.premiseMoment,
-          lineages: [testIds.premiseMoment],
+          lineage: [testIds.premiseMoment],
           children: []
         }
       );

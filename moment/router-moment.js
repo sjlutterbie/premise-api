@@ -15,8 +15,7 @@ router.post('/', jsonParser, (req, res) => {
   // FILTER INVALID REQUESTS
   
   // Handle missing fields
-  let requiredFields = ['creator', 'content', 'isPremiseMoment', 'premise',
-                        'lineages', 'children'];
+  let requiredFields = ['creator', 'content', 'isPremiseMoment', 'children'];
   let missingField = requiredFields.find(field => !(field in req.body));
   if (missingField) {
     return res.status(422).json({
@@ -26,6 +25,23 @@ router.post('/', jsonParser, (req, res) => {
       location: missingField
     });
   }
+  
+  // Handle requests where isPremiseMoment === false, but don't have
+    // `lineage` nor `premise` fields
+  
+  if(!req.body.isPremiseMoment) {
+    let requiredFields = ['lienage', 'premise'];
+    let missingField = requiredFields.find(field => !(field in req.body));
+    if (missingField) {
+      return res.status(422).json({
+        code: 422,
+        reason: 'ValidationError',
+        message: 'Missing field',
+        location: missingField
+      });
+    }
+  }
+
 
   // Handle fields that should be strings
   let stringFields = ['content'];
@@ -73,20 +89,20 @@ router.post('/', jsonParser, (req, res) => {
   let {creator, content, isPremiseMoment} = req.body;
   let premise = req.body.premise || null;
   let children = req.body.children || [];
-  let lineages = req.body.lineage || [];
+  let lineage = req.body.lineage || [];
   
   // Create moment
   return Moment.create({creator, content, isPremiseMoment,
-                        premise, lineages,children})
+                        premise, lineage,children})
     //After creation, append _id to lineages[0]
     .then( moment => {
       
-      let lineage = moment.lineages[0] || [];
+      let lineage = moment.lineage || [];
       lineage.push(moment.id);
 
       return Moment.findByIdAndUpdate(moment.id,
         {
-          lineages: [lineage]
+          lineage
         }, {new: true}).exec();
     })
     .then( moment => {

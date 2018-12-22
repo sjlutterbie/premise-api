@@ -14,7 +14,7 @@ describe('Moment Router', function() {
       content: faker.random.alphaNumeric(100),
       isPremiseMoment: Math.random() < .5 ? true : false,
       premise: testIds.premiseMoment,
-      lineages: [testIds.premiseMoment, testIds.regularMoment],
+      lineage: [testIds.premiseMoment, testIds.regularMoment],
       children: []
     };
 
@@ -60,9 +60,9 @@ describe('Moment Router', function() {
         .should.eventually.have.status(422);
     });
     
-    it('Should reject a request with a missing `lineages`, '
+    it('Should reject a request with a missing `lineage`, '
        + 'if `isPremiseMoment` is false', function() {
-      delete tempMoment.lineages;
+      delete tempMoment.lineage;
       tempMoment.isPremiseMoment = false;
       return chai.request(app)
         .post('/api/moment')
@@ -104,7 +104,7 @@ describe('Moment Router', function() {
     
     it('Should accept a valid request and return a correctly-build '
        + 'moment object', function () {
-      tempMoment.lineages = [];
+      tempMoment.lineage = [];
       tempMoment.isPremiseMoment = true;
       return chai.request(app)
         .post('/api/moment')
@@ -112,7 +112,7 @@ describe('Moment Router', function() {
         .then(function(res) {
           expect(res).to.have.status(201);
           expect(res.body).to.include.keys(['creator', 'content',
-                                            'isPremiseMoment', 'lineages',
+                                            'isPremiseMoment', 'lineage',
                                             'children']);
         });
       

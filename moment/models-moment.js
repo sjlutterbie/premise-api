@@ -24,13 +24,11 @@ const momentSchema = mongoose.Schema({
     ref: 'Moment',
     required: function() { return !this.isPremiseMoment}
   },
-  lineages: {
-    type: [
-      [mongoose.Schema.Types.ObjectId]
-    ],
+  lineage: {
+    type: [mongoose.Schema.Types.ObjectId],
     required: function() { return !this.isPremiseMoment},
-    validate: function(lineages) {
-      return (this.isPremiseMoment || lineages.length > 0); 
+    validate: function(lineage) {
+      return (this.isPremiseMoment || lineage.length > 0); 
     },
     // Mongoose defaults to empty array, breaking 'required' validation, so:
     default: undefined
@@ -46,7 +44,7 @@ momentSchema.methods.serialize = function() {
     content: this.content,
     isPremiseMoment: this.isPremiseMoment,
     premise: this.premise || null,
-    lineages: this.lineages || [],
+    lineage: this.lineages || [],
     children: this.children || [],
     id: this._id
   };
