@@ -7,6 +7,8 @@ const { User } = require('./models-user');
 const router = express.Router();
 
 const jsonParser = bodyParser.json();
+const passport = require('passport');
+const jwtAuth = passport.authenticate('jwt', {session: false});
 
 // POST: Register new user
 router.post('/', jsonParser, (req, res) => {
@@ -139,7 +141,7 @@ router.post('/', jsonParser, (req, res) => {
       });
 });
 
-router.get('/:id', jsonParser, (req, res) => {
+router.get('/:id', jsonParser, jwtAuth, (req, res) => {
   
   User.findById(req.params.id).exec()
     .then(function(user) {
