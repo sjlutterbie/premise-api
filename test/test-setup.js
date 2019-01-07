@@ -123,6 +123,7 @@ before(function() {
       return Moment.create(
         {
           creator: testIds.userId,
+          storyNetwork: testIds.storyNetwork,
           content: tempMoment.content,
           isPremiseMoment: tempMoment.isPremiseMoment,
           children: []
@@ -136,6 +137,7 @@ before(function() {
       return Moment.create(
         {
           creator: testIds.userId,
+          storyNetwork: testIds.storyNetwork,
           content: tempMoment.content,
           isPremiseMoment: tempMoment.isPremiseMoment,
           premise: testIds.premiseMoment,

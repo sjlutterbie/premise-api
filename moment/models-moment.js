@@ -9,6 +9,11 @@ const momentSchema = mongoose.Schema({
     ref: 'User',
     required: true
   },
+  storyNetwork: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'StoryNetwork',
+    required: true
+  },
   content: {
     type: String,
     required: true,
@@ -41,6 +46,7 @@ const momentSchema = mongoose.Schema({
 momentSchema.methods.serialize = function() {
   return {
     creator: this.creator,
+    storyNetwork: this.storyNetwork,
     content: this.content,
     isPremiseMoment: this.isPremiseMoment,
     premise: this.premise || null,

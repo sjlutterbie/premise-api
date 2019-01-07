@@ -11,6 +11,7 @@ describe('Moment Router', function() {
   beforeEach(function() {
     tempMoment = {
       creator: testIds.userId,
+      storyNetwork: testIds.storyNetwork,
       content: faker.random.alphaNumeric(100),
       isPremiseMoment: Math.random() < .5 ? true : false,
       premise: testIds.premiseMoment,
@@ -28,6 +29,14 @@ describe('Moment Router', function() {
     
     it('Should reject a request with a missing `creator`', function() {
       delete tempMoment.creator;
+      return chai.request(app)
+        .post('/api/moment')
+        .send(tempMoment)
+        .should.eventually.have.status(422);
+    });
+    
+    it('Should reject a request with a missing `storyNetwork`', function() {
+      delete tempMoment.storyNetwork;
       return chai.request(app)
         .post('/api/moment')
         .send(tempMoment)
@@ -111,16 +120,10 @@ describe('Moment Router', function() {
         .send(tempMoment)
         .then(function(res) {
           expect(res).to.have.status(201);
-          expect(res.body).to.include.keys(['creator', 'content',
-                                            'isPremiseMoment', 'lineage',
-                                            'children']);
+          expect(res.body).to.include.keys(['creator', 'storyNetwork',
+                                            'content', 'isPremiseMoment',
+                                            'lineage', 'children']);
         });
-      
-      
-      
     });
-    
-    
-
   });
 });
