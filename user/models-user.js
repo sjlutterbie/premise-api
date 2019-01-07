@@ -49,6 +49,7 @@ userSchema.methods.serialize = function() {
     email: this.email || '',
     firstName: this.firstName || '',
     lastName: this.lastName || '',
+    storyNetworks: this.storyNetworks || [],
     id: this._id
   };
 };

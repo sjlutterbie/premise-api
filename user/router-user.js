@@ -139,4 +139,21 @@ router.post('/', jsonParser, (req, res) => {
       });
 });
 
+router.get('/:id', jsonParser, (req, res) => {
+  
+  User.findById(req.params.id).exec()
+    .then(function(user) {
+      return res.status(200).json(user);
+    })
+    .catch(function(err) {
+      return res.status(422).json({
+        code: 422,
+        reason: 'ValidationError',
+        message: 'Invalid userId'
+      });
+    });
+  
+  
+});
+
 module.exports = {router};

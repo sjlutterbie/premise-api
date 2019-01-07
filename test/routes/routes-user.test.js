@@ -243,9 +243,33 @@ describe('User Router', function() {
         .then(function(res) {
           expect(res).to.have.status(201);
           expect(res.body).to.have.keys(
-            ['username', 'email', 'firstName', 'lastName', 'id']
+            ['username', 'email', 'firstName', 'lastName',
+             'storyNetworks', 'id']
           );
         });
     });
   });
+  
+  describe('GET /', function() {
+    
+    it('Should reject requests with an invalid user Id', function() {
+      const reqUrl = `/api/user/${testIds.userId}X`;
+      return chai.request(app)
+        .get(reqUrl)
+        .should.eventually.have.status(422);
+    });
+    
+    it('Should return the correct user with valid request', function() {
+      const reqUrl = `/api/user/${testIds.userId}`;
+      return chai.request(app)
+        .get(reqUrl)
+        .then(function(res) {
+          expect(res).to.have.status(200);
+          expect(res).to.be.an('object');
+          expect(res.body._id).to.equal(String(testIds.userId));
+        });
+    });
+    
+  });
+  
 });
