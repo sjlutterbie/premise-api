@@ -10,6 +10,7 @@ describe('Moment schema', function() {
     // Build a complete Moment for testing
     testMoment = {
       creator: new mongoose.Types.ObjectId(),
+      storyNetwork: new mongoose.Types.ObjectId(),
       content: faker.lorem.sentences(5),
       premise: new mongoose.Types.ObjectId(),
       isPremiseMoment: false,
@@ -29,6 +30,14 @@ describe('Moment schema', function() {
     let doc = new Moment(testMoment);
     doc.validate(function(err) {
       expect(err.errors.creator).to.exist;
+    });
+  });
+  
+  it('Should be inavlid if `storyNetwork` is empty', function() {
+    delete testMoment.storyNetwork;
+    let doc = new Moment(testMoment);
+    doc.validate(function(err) {
+      expect(err.errors.storyNetwork).to.exist;
     });
   });
   

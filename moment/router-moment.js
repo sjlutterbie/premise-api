@@ -16,7 +16,8 @@ router.post('/', jsonParser, (req, res) => {
   // FILTER INVALID REQUESTS
   
   // Handle missing fields
-  let requiredFields = ['creator', 'content', 'isPremiseMoment', 'children'];
+  let requiredFields = ['creator', 'storyNetwork', 'content',
+                        'isPremiseMoment', 'children'];
   let missingField = requiredFields.find(field => !(field in req.body));
   if (missingField) {
     return res.status(422).json({
@@ -42,7 +43,6 @@ router.post('/', jsonParser, (req, res) => {
       });
     }
   }
-
 
   // Handle fields that should be strings
   let stringFields = ['content'];
@@ -87,13 +87,13 @@ router.post('/', jsonParser, (req, res) => {
   // ACCEPT VALID REQUEST
   
   // Store variables
-  let {creator, content, isPremiseMoment} = req.body;
+  let {creator, storyNetwork, content, isPremiseMoment} = req.body;
   let premise = req.body.premise || null;
   let children = req.body.children || [];
   let lineage = req.body.lineage || [];
   
   // Create moment
-  return Moment.create({creator, content, isPremiseMoment,
+  return Moment.create({creator, storyNetwork, content, isPremiseMoment,
                         premise, lineage,children})
     //After creation, append _id to lineages[0]
     .then( moment => {
