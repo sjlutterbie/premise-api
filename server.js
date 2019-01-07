@@ -9,14 +9,18 @@ mongoose.Promise = global.Promise;
 require('dotenv').config();
 const { PORT, DATABASE_URL, JWT_SECRET } = require('./config');
 
-
 // MIDDLEWARE
 
 const cors = require('cors');
 const morgan = require('morgan');
-
+const passport = require('passport');
+  const jwtAuth = passport.authenticate('jwt', {session: false});
 
 // ROUTES
+const { router: authRouter, localStrategy, jwtStrategy } = require('./auth');
+  passport.use(localStrategy);
+  passport.use(jwtStrategy);
+  app.use('/api/auth', authRouter);
 const { router: userRouter } = require('./user');
   app.use('/api/user', userRouter);
 const { router: storyNetworkRouter } = require('./storyNetwork');
