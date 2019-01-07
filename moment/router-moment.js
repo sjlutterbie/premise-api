@@ -1,6 +1,7 @@
 'use strict';
 const express = require('express');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 
 const { Moment } = require('./models-moment');
 const { StoryNetwork } = require('../storyNetwork');
@@ -165,11 +166,16 @@ router.get('/storynetwork/:id', jsonParser, (req, res) => {
   // Check for valid storyNetwork
   StoryNetwork.findById(req.params.id)
     .then(function(storyNetwork) {
-
-    // TODO
-    //  Complete this route, once Moment model updated
       
-      return res.status(200).json(storyNetwork);
+      // Convert string to ObjectId
+      const storyNetworkId = mongoose.Types.ObjectId(req.params.id);
+
+      return Moment.find({
+        storyNetwork: storyNetworkId
+      }).exec();
+    })
+    .then(function(moments) {
+      return res.status(201).json(moments);
     })
     .catch(function(err) {
       return res.status(422).json({
@@ -178,7 +184,6 @@ router.get('/storynetwork/:id', jsonParser, (req, res) => {
         message: 'Invalid storyNetwork Id'
       });
     });
-
 });
 
  

@@ -187,7 +187,7 @@ describe('Moment Router', function() {
   describe( 'GET /storynetwork/:id', function() {
     
     it('Should reject requests with an invalid storyNetwork id', function() {
-      const reqUrl = `/api/moment/storynetwork/${testIds.storyNetwork} + X`;
+      const reqUrl = `/api/moment/storynetwork/${testIds.storyNetwork}X`;
       return chai.request(app)
         .get(reqUrl)
         .then(function(res) {
