@@ -44,4 +44,21 @@ router.post('/', jsonParser, (req, res) => {
 
 });
 
+router.get('/:id', jsonParser, (req, res) => {
+  
+  StoryNetwork.findById(req.params.id).exec()
+    .then(function(storyNetwork) {
+      return res.status(200).json(storyNetwork);
+    })
+    .catch(function(err) {
+      return res.status(422).json({
+        code: 422,
+        reason: 'ValidationError',
+        message: 'Invalid storyNetwork Id'
+      });
+    });
+  
+});
+
+
 module.exports = {router};
