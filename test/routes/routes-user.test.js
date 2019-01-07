@@ -243,7 +243,8 @@ describe('User Router', function() {
         .then(function(res) {
           expect(res).to.have.status(201);
           expect(res.body).to.have.keys(
-            ['username', 'email', 'firstName', 'lastName', 'id']
+            ['username', 'email', 'firstName', 'lastName',
+             'storyNetworks', 'id']
           );
         });
     });
