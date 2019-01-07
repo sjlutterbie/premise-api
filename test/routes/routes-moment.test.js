@@ -115,12 +115,33 @@ describe('Moment Router', function() {
                                             'isPremiseMoment', 'lineage',
                                             'children']);
         });
-      
-      
-      
+    });
+  });
+  
+  describe( 'GET/:id', function() {
+    
+    it('Should reject requests with an invalid momentId', function() {
+      const brokenMomentId = testIds.regularMoment + 'X';
+      return chai.request(app)
+        .get(`/api/moment/${brokenMomentId}`)
+        .then(function(res) {
+          expect(res).to.have.status(422);
+        });
+    });
+    
+    it('Should return the correct moment', function() {
+      return chai.request(app)
+        .get(`/api/moment/${testIds.regularMoment}`)
+        .then(function(res) {
+          expect(res).to.have.status(200);
+          expect(res).to.be.an('object');
+          expect(res.body._id).to.equal(String(testIds.regularMoment));
+        });
     });
     
     
-
+    
   });
+  
+  
 });

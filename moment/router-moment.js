@@ -120,4 +120,22 @@ router.post('/', jsonParser, (req, res) => {
 
 });
 
+ 
+router.get('/:id', jsonParser, (req, res) => {
+  
+  Moment.findById(req.params.id)
+    .then(function(moment) {
+      res.status(200).json(moment);
+    })
+    .catch(function(err) {
+      return res.status(422).json({
+        code: 422,
+        reason: 'ValidationError',
+        message: 'Invalid moment Id'
+      });
+    });
+
+});
+
+
 module.exports = { router };
