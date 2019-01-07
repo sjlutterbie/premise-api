@@ -78,7 +78,6 @@ describe('StoryNetwork Router', function() {
       return chai.request(app)
         .get(reqUrl)
         .then(function(res) {
-          console.log(res.body);
           expect(res).to.have.status(200);
           expect(res).to.be.an('object');
           expect(res.body._id).to.equal(String(testIds.storyNetwork));

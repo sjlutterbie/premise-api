@@ -38,4 +38,11 @@ router.post('/refresh', jwtAuth, (req, res) => {
   res.json({authToken});
 });
 
+
+router.get('/test', jwtAuth, (req, res) => {
+  // Route for unit testing JWT authentication middleware
+  res.status(200).json({message: 'Authentication successful'});
+});
+
+
 module.exports = {router};
