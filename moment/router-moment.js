@@ -9,10 +9,12 @@ const { StoryNetwork } = require('../storyNetwork');
 const router = express.Router();
 
 const jsonParser = bodyParser.json();
+const passport = require('passport');
+const jwtAuth = passport.authenticate('jwt', {session: false});
 
 // POST: Create a Moment
 
-router.post('/', jsonParser, (req, res) => {
+router.post('/', jsonParser, jwtAuth, (req, res) => {
   
   // FILTER INVALID REQUESTS
   
@@ -122,7 +124,7 @@ router.post('/', jsonParser, (req, res) => {
 
 });
 
-router.get('/storychain', jsonParser, (req, res) => {
+router.get('/storychain', jsonParser, jwtAuth, (req, res) => {
   
   const startMoment = req.query.start;
   const endMoment = req.query.end;
@@ -161,7 +163,7 @@ router.get('/storychain', jsonParser, (req, res) => {
     });
 });
 
-router.get('/storynetwork/:id', jsonParser, (req, res) => {
+router.get('/storynetwork/:id', jsonParser, jwtAuth, (req, res) => {
   
   // Check for valid storyNetwork
   StoryNetwork.findById(req.params.id)
@@ -187,7 +189,7 @@ router.get('/storynetwork/:id', jsonParser, (req, res) => {
 });
 
  
-router.get('/:id', jsonParser, (req, res) => {
+router.get('/:id', jsonParser, jwtAuth, (req, res) => {
   
   Moment.findById(req.params.id)
     .then(function(moment) {

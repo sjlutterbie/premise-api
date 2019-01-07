@@ -27,11 +27,19 @@ describe('Moment Router', function() {
   
   describe('POST /', function() {
     
+    it('Should reject an unauthorized request', function() {
+      return chai.request(app)
+        .post('/api/moment')
+        .send(tempMoment)
+        .should.eventually.have.status(401);
+    });
+    
     it('Should reject a request with a missing `creator`', function() {
       delete tempMoment.creator;
       return chai.request(app)
         .post('/api/moment')
         .send(tempMoment)
+        .set('authorization', `Bearer ${token}`)
         .should.eventually.have.status(422);
     });
     
@@ -40,6 +48,7 @@ describe('Moment Router', function() {
       return chai.request(app)
         .post('/api/moment')
         .send(tempMoment)
+        .set('authorization', `Bearer ${token}`)
         .should.eventually.have.status(422);
     });
     
@@ -48,6 +57,7 @@ describe('Moment Router', function() {
       return chai.request(app)
         .post('/api/moment')
         .send(tempMoment)
+        .set('authorization', `Bearer ${token}`)
         .should.eventually.have.status(422);
     });
     
@@ -56,6 +66,7 @@ describe('Moment Router', function() {
       return chai.request(app)
         .post('/api/moment')
         .send(tempMoment)
+        .set('authorization', `Bearer ${token}`)
         .should.eventually.have.status(422);
     });
     
@@ -66,6 +77,7 @@ describe('Moment Router', function() {
       return chai.request(app)
         .post('/api/moment')
         .send(tempMoment)
+        .set('authorization', `Bearer ${token}`)
         .should.eventually.have.status(422);
     });
     
@@ -76,6 +88,7 @@ describe('Moment Router', function() {
       return chai.request(app)
         .post('/api/moment')
         .send(tempMoment)
+        .set('authorization', `Bearer ${token}`)
         .should.eventually.have.status(422);
     });
     
@@ -84,6 +97,7 @@ describe('Moment Router', function() {
       return chai.request(app)
         .post('/api/moment')
         .send(tempMoment)
+        .set('authorization', `Bearer ${token}`)
         .should.eventually.have.status(422);
     });
     
@@ -92,6 +106,7 @@ describe('Moment Router', function() {
       return chai.request(app)
         .post('/api/moment')
         .send(tempMoment)
+        .set('authorization', `Bearer ${token}`)
         .should.eventually.have.status(422);
     });
     
@@ -100,6 +115,7 @@ describe('Moment Router', function() {
       return chai.request(app)
         .post('/api/moment')
         .send(tempMoment)
+        .set('authorization', `Bearer ${token}`)
         .should.eventually.have.status(422);
     });
     
@@ -108,6 +124,7 @@ describe('Moment Router', function() {
       return chai.request(app)
         .post('/api/moment')
         .send(tempMoment)
+        .set('authorization', `Bearer ${token}`)
         .should.eventually.have.status(422);
     });
     
@@ -118,6 +135,7 @@ describe('Moment Router', function() {
       return chai.request(app)
         .post('/api/moment')
         .send(tempMoment)
+        .set('authorization', `Bearer ${token}`)
         .then(function(res) {
           expect(res).to.have.status(201);
           expect(res.body).to.include.keys(['creator', 'storyNetwork',
@@ -129,10 +147,19 @@ describe('Moment Router', function() {
   
   describe( 'GET/:id', function() {
     
+    it('Should reject an unauthorized request', function() {
+      return chai.request(app)
+        .get(`/api/moment/${testIds.regularMoment}`)
+        .then(function(res) {
+          expect(res).to.have.status(401);
+        });
+    });
+    
     it('Should reject requests with an invalid momentId', function() {
       const brokenMomentId = testIds.regularMoment + 'X';
       return chai.request(app)
         .get(`/api/moment/${brokenMomentId}`)
+        .set('authorization', `Bearer ${token}`)
         .then(function(res) {
           expect(res).to.have.status(422);
         });
@@ -141,6 +168,7 @@ describe('Moment Router', function() {
     it('Should return the correct moment', function() {
       return chai.request(app)
         .get(`/api/moment/${testIds.regularMoment}`)
+        .set('authorization', `Bearer ${token}`)
         .then(function(res) {
           expect(res).to.have.status(200);
           expect(res).to.be.an('object');
@@ -156,6 +184,7 @@ describe('Moment Router', function() {
                      + `&end=${testIds.regularMoment + 'X'}`;
       return chai.request(app)
         .get(reqUrl)
+        .set('authorization', `Bearer ${token}`)
         .then(function(res) {
           expect(res).to.have.status(422);
         });
@@ -166,6 +195,7 @@ describe('Moment Router', function() {
                      + `&end=${testIds.regularMoment}`;
       return chai.request(app)
         .get(reqUrl)
+        .set('authorization', `Bearer ${token}`)
         .then(function(res) {
           expect(res).to.have.status(422);
         });
@@ -177,6 +207,7 @@ describe('Moment Router', function() {
                      + `&end=${testIds.regularMoment}`;
       return chai.request(app)
         .get(reqUrl)
+        .set('authorization', `Bearer ${token}`)
         .then(function(res) {
           expect(res).to.have.status(201);
           expect(res).to.be.an('object');
@@ -190,6 +221,7 @@ describe('Moment Router', function() {
       const reqUrl = `/api/moment/storynetwork/${testIds.storyNetwork}X`;
       return chai.request(app)
         .get(reqUrl)
+        .set('authorization', `Bearer ${token}`)
         .then(function(res) {
           expect(res).to.have.status(422);
         });
@@ -200,6 +232,7 @@ describe('Moment Router', function() {
       const reqUrl = `/api/moment/storynetwork/${testIds.storyNetwork}`;
       return chai.request(app)
         .get(reqUrl)
+        .set('authorization', `Bearer ${token}`)
         .then(function(res) {
           expect(res).to.have.status(201);
           expect(res).to.be.an('object');

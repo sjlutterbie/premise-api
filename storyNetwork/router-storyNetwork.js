@@ -7,10 +7,12 @@ const { StoryNetwork } = require('./models-storyNetwork');
 const router = express.Router();
 
 const jsonParser = bodyParser.json();
+const passport = require('passport');
+const jwtAuth = passport.authenticate('jwt', {session: false});
 
 // POST: Create new Story Network
 
-router.post('/', jsonParser, (req, res) => {
+router.post('/', jsonParser, jwtAuth, (req, res) => {
   
   // Check for missing fields
   const requiredFields = ['name', 'isPublic', 'creator'];
@@ -44,7 +46,7 @@ router.post('/', jsonParser, (req, res) => {
 
 });
 
-router.get('/:id', jsonParser, (req, res) => {
+router.get('/:id', jsonParser, jwtAuth, (req, res) => {
   
   StoryNetwork.findById(req.params.id).exec()
     .then(function(storyNetwork) {

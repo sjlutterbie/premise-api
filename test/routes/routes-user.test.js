@@ -252,10 +252,18 @@ describe('User Router', function() {
   
   describe('GET /', function() {
     
+    it('Should reject an unauthorized request', function() {
+      const reqUrl = `/api/user/${testIds.userId}`;
+      return chai.request(app)
+        .get(reqUrl)
+        .should.eventually.have.status(401);
+    });
+    
     it('Should reject requests with an invalid user Id', function() {
       const reqUrl = `/api/user/${testIds.userId}X`;
       return chai.request(app)
         .get(reqUrl)
+        .set('authorization', `Bearer ${token}`)
         .should.eventually.have.status(422);
     });
     
@@ -263,13 +271,12 @@ describe('User Router', function() {
       const reqUrl = `/api/user/${testIds.userId}`;
       return chai.request(app)
         .get(reqUrl)
+        .set('authorization', `Bearer ${token}`)
         .then(function(res) {
           expect(res).to.have.status(200);
           expect(res).to.be.an('object');
           expect(res.body._id).to.equal(String(testIds.userId));
         });
     });
-    
   });
-  
 });
