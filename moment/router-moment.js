@@ -1,8 +1,10 @@
 'use strict';
 const express = require('express');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 
 const { Moment } = require('./models-moment');
+const { StoryNetwork } = require('../storyNetwork');
 
 const router = express.Router();
 
@@ -15,7 +17,8 @@ router.post('/', jsonParser, (req, res) => {
   // FILTER INVALID REQUESTS
   
   // Handle missing fields
-  let requiredFields = ['creator', 'content', 'isPremiseMoment', 'children'];
+  let requiredFields = ['creator', 'storyNetwork', 'content',
+                        'isPremiseMoment', 'children'];
   let missingField = requiredFields.find(field => !(field in req.body));
   if (missingField) {
     return res.status(422).json({
@@ -41,7 +44,6 @@ router.post('/', jsonParser, (req, res) => {
       });
     }
   }
-
 
   // Handle fields that should be strings
   let stringFields = ['content'];
@@ -86,13 +88,13 @@ router.post('/', jsonParser, (req, res) => {
   // ACCEPT VALID REQUEST
   
   // Store variables
-  let {creator, content, isPremiseMoment} = req.body;
+  let {creator, storyNetwork, content, isPremiseMoment} = req.body;
   let premise = req.body.premise || null;
   let children = req.body.children || [];
   let lineage = req.body.lineage || [];
   
   // Create moment
-  return Moment.create({creator, content, isPremiseMoment,
+  return Moment.create({creator, storyNetwork, content, isPremiseMoment,
                         premise, lineage,children})
     //After creation, append _id to lineages[0]
     .then( moment => {
@@ -117,6 +119,87 @@ router.post('/', jsonParser, (req, res) => {
     });
 
   // After creation, append the _id to lineages
+
+});
+
+router.get('/storychain', jsonParser, (req, res) => {
+  
+  const startMoment = req.query.start;
+  const endMoment = req.query.end;
+  
+  // Get END moment first
+  
+  Moment.findById(endMoment)
+    .then(function(moment) {
+      
+      // Convert _ids to strings
+      const strLineage = moment.lineage.map(String);
+      
+      // Confirm startMoment is within moment's lineage
+      if(!strLineage.includes(startMoment)) {
+        throw('startMoment not in endMoment lineage');
+      } else {
+        
+        // Create a subset of from startMoment to endMoment
+        const momentSet = moment.lineage.slice(
+                            strLineage.indexOf(startMoment),
+                            moment.lineage.length);
+        return Moment.find({
+          _id: { $in: momentSet}
+        }).exec();
+      }
+    })
+    .then(function(storyChain) {
+      return res.status(201).json(storyChain);
+    })
+    .catch(function(err) {
+      return res.status(422).json({
+        code: 422,
+        reason: 'ValidationError',
+        message: 'Invalid Id pairing'
+      });
+    });
+});
+
+router.get('/storynetwork/:id', jsonParser, (req, res) => {
+  
+  // Check for valid storyNetwork
+  StoryNetwork.findById(req.params.id)
+    .then(function(storyNetwork) {
+      
+      // Convert string to ObjectId
+      const storyNetworkId = mongoose.Types.ObjectId(req.params.id);
+
+      return Moment.find({
+        storyNetwork: storyNetworkId
+      }).exec();
+    })
+    .then(function(moments) {
+      return res.status(201).json(moments);
+    })
+    .catch(function(err) {
+      return res.status(422).json({
+        code: 422,
+        reason: 'ValidationError',
+        message: 'Invalid storyNetwork Id'
+      });
+    });
+});
+
+ 
+router.get('/:id', jsonParser, (req, res) => {
+  
+  Moment.findById(req.params.id)
+    .then(function(moment) {
+      res.status(200).json(moment);
+    })
+    .catch(function(err) {
+      return res.status(422).json({
+        code: 422,
+        reason: 'ValidationError',
+        message: 'Invalid moment Id'
+      });
+    });
 
 });
 

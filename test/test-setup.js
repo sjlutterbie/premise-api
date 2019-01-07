@@ -123,6 +123,7 @@ before(function() {
       return Moment.create(
         {
           creator: testIds.userId,
+          storyNetwork: testIds.storyNetwork,
           content: tempMoment.content,
           isPremiseMoment: tempMoment.isPremiseMoment,
           children: []
@@ -136,6 +137,7 @@ before(function() {
       return Moment.create(
         {
           creator: testIds.userId,
+          storyNetwork: testIds.storyNetwork,
           content: tempMoment.content,
           isPremiseMoment: tempMoment.isPremiseMoment,
           premise: testIds.premiseMoment,
@@ -150,7 +152,15 @@ before(function() {
           children: [testIds.regularMoment]
         }
       ).exec();
-    }).then(function(res) {
+    })
+    .then(function(res) {
+      return Moment.findByIdAndUpdate(testIds.regularMoment,
+        {
+          lineage: [testIds.premiseMoment, testIds.regularMoment]
+        }
+      ).exec();
+    })
+    .then(function(res) {
       console.log('Data objects created successfully');
       return;
     }).catch(function(err) {
