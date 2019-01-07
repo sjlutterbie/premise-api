@@ -15,7 +15,6 @@ const { PORT, DATABASE_URL, JWT_SECRET } = require('./config');
 const cors = require('cors');
 const morgan = require('morgan');
 
-
 // ROUTES
 const { router: userRouter } = require('./user');
   app.use('/api/user', userRouter);
