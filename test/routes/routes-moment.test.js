@@ -173,8 +173,29 @@ describe('Moment Router', function() {
           expect(res).to.be.an('object');
         });
     });
-
   });
   
-  
+  describe( 'GET /storynetwork/:id', function() {
+    
+    it('Should reject requests with an invalid storyNetwork id', function() {
+      const reqUrl = `/api/moment/storynetwork/${testIds.storyNetwork} + X`;
+      return chai.request(app)
+        .get(reqUrl)
+        .then(function(res) {
+          expect(res).to.have.status(422);
+        });
+    });
+    
+    it('Should return moments within a valid storyNetwork', function() {
+      
+      const reqUrl = `/api/moment/storynetwork/${testIds.storyNetwork}`;
+      return chai.request(app)
+        .get(reqUrl)
+        .then(function(res) {
+          expect(res).to.have.status(201);
+          expect(res).to.be.an('object');
+        });
+
+    });
+  });
 });

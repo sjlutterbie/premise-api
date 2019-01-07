@@ -3,6 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 const { Moment } = require('./models-moment');
+const { StoryNetwork } = require('../storyNetwork');
 
 const router = express.Router();
 
@@ -157,12 +158,29 @@ router.get('/storychain', jsonParser, (req, res) => {
         message: 'Invalid Id pairing'
       });
     });
-  
-  // Get END moment first
-    // Extract lineage, down to startMoment
-    // 
-  
 });
+
+router.get('/storynetwork/:id', jsonParser, (req, res) => {
+  
+  // Check for valid storyNetwork
+  StoryNetwork.findById(req.params.id)
+    .then(function(storyNetwork) {
+
+    // TODO
+    //  Complete this route, once Moment model updated
+      
+      return res.status(200).json(storyNetwork);
+    })
+    .catch(function(err) {
+      return res.status(422).json({
+        code: 422,
+        reason: 'ValidationError',
+        message: 'Invalid storyNetwork Id'
+      });
+    });
+
+});
+
  
 router.get('/:id', jsonParser, (req, res) => {
   
