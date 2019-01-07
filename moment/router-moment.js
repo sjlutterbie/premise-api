@@ -120,6 +120,49 @@ router.post('/', jsonParser, (req, res) => {
 
 });
 
+router.get('/storychain', jsonParser, (req, res) => {
+  
+  const startMoment = req.query.start;
+  const endMoment = req.query.end;
+  
+  // Get END moment first
+  
+  Moment.findById(endMoment)
+    .then(function(moment) {
+      
+      // Convert _ids to strings
+      const strLineage = moment.lineage.map(String);
+      
+      // Confirm startMoment is within moment's lineage
+      if(!strLineage.includes(startMoment)) {
+        throw('startMoment not in endMoment lineage');
+      } else {
+        
+        // Create a subset of from startMoment to endMoment
+        const momentSet = moment.lineage.slice(
+                            strLineage.indexOf(startMoment),
+                            moment.lineage.length);
+        return Moment.find({
+          _id: { $in: momentSet}
+        }).exec();
+      }
+    })
+    .then(function(storyChain) {
+      return res.status(201).json(storyChain);
+    })
+    .catch(function(err) {
+      return res.status(422).json({
+        code: 422,
+        reason: 'ValidationError',
+        message: 'Invalid Id pairing'
+      });
+    });
+  
+  // Get END moment first
+    // Extract lineage, down to startMoment
+    // 
+  
+});
  
 router.get('/:id', jsonParser, (req, res) => {
   
@@ -136,6 +179,5 @@ router.get('/:id', jsonParser, (req, res) => {
     });
 
 });
-
 
 module.exports = { router };

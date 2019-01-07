@@ -150,7 +150,15 @@ before(function() {
           children: [testIds.regularMoment]
         }
       ).exec();
-    }).then(function(res) {
+    })
+    .then(function(res) {
+      return Moment.findByIdAndUpdate(testIds.regularMoment,
+        {
+          lineage: [testIds.premiseMoment, testIds.regularMoment]
+        }
+      ).exec();
+    })
+    .then(function(res) {
       console.log('Data objects created successfully');
       return;
     }).catch(function(err) {

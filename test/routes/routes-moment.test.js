@@ -138,9 +138,42 @@ describe('Moment Router', function() {
           expect(res.body._id).to.equal(String(testIds.regularMoment));
         });
     });
+  });
+  
+  describe( 'GET /storychain?start=:id&end=:id', function() {
     
+    it('Should reject requests with an invalid end momentId', function() {
+      const reqUrl = `/api/moment/storychain?start=${testIds.premiseMoment}`
+                     + `&end=${testIds.regularMoment + 'X'}`;
+      return chai.request(app)
+        .get(reqUrl)
+        .then(function(res) {
+          expect(res).to.have.status(422);
+        });
+    });
     
-    
+    it('Should reject requests with an invalid start mometnId', function() {
+      const reqUrl = `/api/moment/storychain?start=${testIds.premiseMoment+'X'}`
+                     + `&end=${testIds.regularMoment}`;
+      return chai.request(app)
+        .get(reqUrl)
+        .then(function(res) {
+          expect(res).to.have.status(422);
+        });
+    });
+
+
+    it('It should return the correct storyChain', function() {
+      const reqUrl = `/api/moment/storychain?start=${testIds.premiseMoment}`
+                     + `&end=${testIds.regularMoment}`;
+      return chai.request(app)
+        .get(reqUrl)
+        .then(function(res) {
+          expect(res).to.have.status(201);
+          expect(res).to.be.an('object');
+        });
+    });
+
   });
   
   
