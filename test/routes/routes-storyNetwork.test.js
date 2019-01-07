@@ -63,4 +63,28 @@ describe('StoryNetwork Router', function() {
         });
     });
   });
+  
+  describe( 'GET /:id', function() {
+    
+    it('Should reject a request with an invalid storyNetwork id', function() {
+      const reqUrl = `/api/story-network/${testIds.storyNetwork}X`;
+      return chai.request(app)
+        .get(reqUrl)
+        .should.eventually.have.status(422);
+    });
+    
+    it('Should return correct storyNetwork with a valid request', function() {
+      const reqUrl = `/api/story-network/${testIds.storyNetwork}`;
+      return chai.request(app)
+        .get(reqUrl)
+        .then(function(res) {
+          console.log(res.body);
+          expect(res).to.have.status(200);
+          expect(res).to.be.an('object');
+          expect(res.body._id).to.equal(String(testIds.storyNetwork));
+        });
+    });
+    
+  });
+  
 });
