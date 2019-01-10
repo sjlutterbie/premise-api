@@ -16,6 +16,14 @@ const morgan = require('morgan');
 const passport = require('passport');
   const jwtAuth = passport.authenticate('jwt', {session: false});
 
+app.use(
+  cors({
+    origin: "*"
+  })
+);
+
+app.use(morgan('common'));
+
 // ROUTES
 const { router: authRouter, localStrategy, jwtStrategy } = require('./auth');
   passport.use(localStrategy);
@@ -27,14 +35,6 @@ const { router: storyNetworkRouter } = require('./storyNetwork');
   app.use('/api/story-network', storyNetworkRouter);
 const { router: momentRouter } = require('./moment');
   app.use('/api/moment', momentRouter);
-
-app.use(
-  cors({
-    origin: "*"
-  })
-);
-
-app.use(morgan('common'));
 
 app.get('/api/*', (req, res) => {
   res.json({ok: true});

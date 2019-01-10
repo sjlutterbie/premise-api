@@ -45,14 +45,6 @@ describe('User schema', function() {
     });
   });
   
-  it('Should be invalid if `email` is empty', function() {
-    delete testUser.email;
-    let doc = new User(testUser);
-    doc.validate(function(err) {
-      expect(err.errors.email).to.exist;
-    });
-  });
-
   it('Should validate if all fields exist', function() {
     let doc = new User(testUser);
     doc.validate(function(err) {

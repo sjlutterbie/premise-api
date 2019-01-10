@@ -32,17 +32,6 @@ describe('User Router', function() {
           .should.eventually.have.status(422);
     });
     
-    it('Should reject requests with a missing email', function() {
-      return chai.request(app)
-          .post('/api/user')
-          .send(
-            {
-              username: faker.random.alphaNumeric(10),
-              password: faker.random.alphaNumeric(10)
-            })
-          .should.eventually.have.status(422);
-    });
-    
     it('Should reject requests with a non-string username', function() {
       return chai.request(app)
         .post('/api/user')
@@ -190,21 +179,7 @@ describe('User Router', function() {
         )
         .should.eventually.have.status(422);
     });
-    
-    it('Should reject a request with too short an email', function() {
-      // Min email length: 1
-      return chai.request(app)
-        .post('/api/user')
-        .send(
-          {
-            username: faker.random.alphaNumeric(10),
-            password: faker.random.alphaNumeric(10),
-            email: ''
-          }
-        )
-        .should.eventually.have.status(422);
-    });
-    
+
     it('Should reject a request with an existing username', function() {
       const tempUser = {
         username: testUser.username,

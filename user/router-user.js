@@ -14,7 +14,7 @@ const jwtAuth = passport.authenticate('jwt', {session: false});
 router.post('/', jsonParser, (req, res) => {
   
   // Check for missing fields
-  const requiredFields = ['username', 'password', 'email'];
+  const requiredFields = ['username', 'password'];
   const missingField = requiredFields.find(field => !(field in req.body));
   
   // Handle missing fields
@@ -68,9 +68,6 @@ router.post('/', jsonParser, (req, res) => {
     password: {
       min: 10,
       max: 71
-    },
-    email: {
-      min: 1
     }
   };
   
@@ -99,7 +96,7 @@ router.post('/', jsonParser, (req, res) => {
   }
   
   // Store variables
-  let {username, password, email, firstName = '', lastName = ''} = req.body;
+  let {username, password, email = '', firstName = '', lastName = ''} = req.body;
     firstName = firstName.trim();
     lastName = lastName.trim();
     email = email.trim();
