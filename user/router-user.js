@@ -91,7 +91,8 @@ router.post('/', jsonParser, (req, res) => {
         ? `Password must be at least ${sizedFields[tooSmallField].min} `
           + 'characters long' :
           `Password must be at most ${sizedFields[tooLargeField].max} `
-          + 'characters long'
+          + 'characters long',
+      location: (tooSmallField || tooLargeField)
     });
   }
   
@@ -110,8 +111,8 @@ router.post('/', jsonParser, (req, res) => {
         return Promise.reject({
           code: 422,
           reason: 'ValidationError',
-          message: 'Username or email address already taken',
-          location: 'username or email'
+          message: 'Username already taken',
+          location: 'username'
         });
       }
       return User.hashPassword(password);
@@ -133,7 +134,6 @@ router.post('/', jsonParser, (req, res) => {
           return res.status(err.code).json(err);
         }
         // Keep non-validation errors private
-        console.log(err);
         res.status(500).json({code: 500, message: 'Internal server error'});
       });
 });
