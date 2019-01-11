@@ -103,7 +103,7 @@ router.post('/', jsonParser, (req, res) => {
     // NOTE: username & password already trimmed
     
   // Check username & email not taken; if not, create user
-  return User.find({$or:[{username}, {email}]})
+  return User.find({$or:[{username}]})
     .count()
     .then(count => {
       if( count > 0) {

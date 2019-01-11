@@ -192,18 +192,6 @@ describe('User Router', function() {
         .should.eventually.have.status(422);
     });
     
-    it('Should reject a request with an existing email', function() {
-      const tempUser = {
-        username: faker.random.alphaNumeric(10),
-        password: faker.random.alphaNumeric(10),
-        email: testUser.email
-      };
-      return chai.request(app)
-        .post('/api/user')
-        .send(tempUser)
-        .should.eventually.have.status(422);
-    });
-    
     it('Should accept a valid request', function() {
       const testUser = {
         username: faker.random.alphaNumeric(10),
