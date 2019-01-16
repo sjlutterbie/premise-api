@@ -54,7 +54,7 @@ momentSchema.methods.serialize = function() {
     content: this.content,
     isPremiseMoment: this.isPremiseMoment,
     premise: this.premise || null,
-    lineage: this.lineages || [],
+    lineage: this.lineage || [],
     lineageLength: this.lineageLength,
     children: this.children || [],
     id: this._id
