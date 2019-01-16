@@ -43,6 +43,10 @@ const momentSchema = mongoose.Schema({
   }
 });
 
+momentSchema.virtual('lineageLength').get(function() {
+  return this.lineage.length;
+});
+
 momentSchema.methods.serialize = function() {
   return {
     creator: this.creator,
