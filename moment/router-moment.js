@@ -35,7 +35,7 @@ router.post('/', jsonParser, jwtAuth, (req, res) => {
     // `lineage` nor `premise` fields
   
   if(!req.body.isPremiseMoment) {
-    let requiredFields = ['lienage', 'premise'];
+    let requiredFields = ['lineage', 'premise'];
     let missingField = requiredFields.find(field => !(field in req.body));
     if (missingField) {
       return res.status(422).json({
