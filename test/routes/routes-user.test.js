@@ -213,7 +213,7 @@ describe('User Router', function() {
     });
   });
   
-  describe('GET /', function() {
+  describe('GET /:id', function() {
     
     it('Should reject an unauthorized request', function() {
       const reqUrl = `/api/user/${testIds.userId}`;
@@ -241,5 +241,36 @@ describe('User Router', function() {
           expect(res.body._id).to.equal(String(testIds.userId));
         });
     });
+  });
+  
+  describe('GET /username/:username', function() {
+    
+    it('Should reject an unauthorized request', function() {
+      const reqUrl = `/api/user/username/${testIds.username}`;
+      return chai.request(app)
+        .get(reqUrl)
+        .should.eventually.have.status(401);
+    });
+    
+    it('Should reject a request with an invalid username', function() {
+      const reqUrl = `/api/user/username/${testIds.username}X`;
+      return chai.request(app)
+        .get(reqUrl)
+        .set('authorization', `Bearer ${token}`)
+        .should.eventually.have.status(422);
+    });
+    
+    it('Should return the correct user with a valid request', function() {
+      const reqUrl = `/api/user/username/${testUser.username}`;
+      return chai.request(app)
+        .get(reqUrl)
+        .set('authorization', `Bearer ${token}`)
+        .then(function(res) {
+          expect(res).to.have.status(200);
+          expect(res).to.be.an('object');
+          expect(res.body.username).to.equal(testUser.username);
+        });
+    });
+    
   });
 });

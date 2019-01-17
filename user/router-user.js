@@ -11,6 +11,7 @@ const passport = require('passport');
 const jwtAuth = passport.authenticate('jwt', {session: false});
 
 // POST: Register new user
+
 router.post('/', jsonParser, (req, res) => {
   
   // Check for missing fields
@@ -138,6 +139,8 @@ router.post('/', jsonParser, (req, res) => {
       });
 });
 
+// GET: User by userId
+
 router.get('/:id', jsonParser, jwtAuth, (req, res) => {
   
   User.findById(req.params.id).exec()
@@ -151,8 +154,33 @@ router.get('/:id', jsonParser, jwtAuth, (req, res) => {
         message: 'Invalid userId'
       });
     });
-  
-  
 });
+
+// GET: User by username
+
+router.get('/username/:username', jsonParser, jwtAuth, (req, res) => {
+  
+  User.find({username: req.params.username}).exec()
+    .then(function(user) {
+      if(user.length === 0) {
+          return res.status(422).json({
+            code: 422,
+            reason: 'ValidationError',
+            message: 'Could not find username'
+          });
+      }
+      return res.status(200).json(user[0]);
+    })
+    .catch(function(err) {
+      return res.status(422).json({
+        code: 422,
+        reason: 'ValidationError',
+        message: 'Invalid request'
+      });
+    });
+  
+
+});
+
 
 module.exports = {router};
