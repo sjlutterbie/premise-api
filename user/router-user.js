@@ -169,7 +169,7 @@ router.get('/username/:username', jsonParser, jwtAuth, (req, res) => {
             message: 'Could not find username'
           });
       }
-      return res.status(200).json(user[0]);
+      return res.status(200).json(user[0].serialize());
     })
     .catch(function(err) {
       return res.status(422).json({
