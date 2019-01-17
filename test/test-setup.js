@@ -149,7 +149,8 @@ before(function() {
       testIds.regularMoment = newMoment._id;
       return Moment.findByIdAndUpdate(testIds.premiseMoment,
         {
-          children: [testIds.regularMoment]
+          children: [testIds.regularMoment],
+          lineage: [testIds.premiseMoment]
         }
       ).exec();
     })
