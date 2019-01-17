@@ -237,7 +237,38 @@ describe('Moment Router', function() {
           expect(res).to.have.status(201);
           expect(res).to.be.an('object');
         });
-
+    });
+  });
+  
+  describe('GET /storynetwork/:id/max-lineage', function() {
+    
+    it('Should reject requests with invalid authorization', function() {
+      const reqUrl =
+        `/api/moment/storynetwork/${testIds.storyNetwork}/max-lineage`;
+      return chai.request(app)
+        .get(reqUrl)
+        .should.eventually.have.status(401);
+    });
+    
+    it('Should reject requests with an invalid storyNetwork', function() {
+      const reqUrl = 
+        `/api/moment/storynetwork/${testIds.storyNetwork}X/max-lineage`;
+      return chai.request(app)
+        .get(reqUrl)
+        .set('authorization', `Bearer ${token}`)
+        .should.eventually.have.status(422);
+    });
+    
+    it('Should return a single moment', function() {
+      const reqUrl = 
+        `/api/moment/storynetwork/${testIds.storyNetwork}/max-lineage`;
+      return chai.request(app)
+        .get(reqUrl)
+        .set('authorization', `Bearer ${token}`)
+        .then(function(res) {
+          expect(res).to.have.status(201);
+          expect(res.body.lineageLength).to.equal(2) // Based on test data setup
+        });
     });
   });
 });

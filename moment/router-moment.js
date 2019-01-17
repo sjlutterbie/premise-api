@@ -192,6 +192,37 @@ router.get('/storynetwork/:id', jsonParser, jwtAuth, (req, res) => {
     });
 });
 
+router.get('/storynetwork/:id/max-lineage', jsonParser, jwtAuth, (req, res) => {
+  
+  Moment.find({storyNetwork: req.params.id}).exec()
+    .then(function(moments) {
+      // Serialize, to attach lineageLength
+      for(let i = 0; i < moments.length; i++) {
+        moments[i] = moments[i].serialize();
+      }
+      
+      // Select the item with the longest lineageLength
+      let output = {lineageLength: 0};
+      
+      for(let i = 0; i < moments.length; i++) {
+        if (moments[i].lineageLength > output.lineageLength) {
+          output = moments[i];
+        }
+      }
+      
+      // Return the first result (handles tie for longest lineageLength)
+      return res.status(201).json(output);
+    })
+    .catch(function(err) {
+      return res.status(422).json({
+        code: 422,
+        reason: 'ValidationError',
+        message: 'Invalid storyNetwork'
+      });
+    });
+
+});
+
  
 router.get('/:id', jsonParser, jwtAuth, (req, res) => {
   

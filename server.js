@@ -22,7 +22,7 @@ app.use(
   })
 );
 
-app.use(morgan('common'));
+// app.use(morgan('common'));
 
 // ROUTES
 const { router: authRouter, localStrategy, jwtStrategy } = require('./auth');
