@@ -152,6 +152,12 @@ router.get('/storychain', jsonParser, jwtAuth, (req, res) => {
       }
     })
     .then(function(storyChain) {
+      
+      // Serialize moments
+      for (let i = 0; i < storyChain.length; i++) {
+        storyChain[i] = storyChain[i].serialize();
+      }
+      
       return res.status(201).json(storyChain);
     })
     .catch(function(err) {
