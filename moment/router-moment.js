@@ -177,6 +177,12 @@ router.get('/storynetwork/:id', jsonParser, jwtAuth, (req, res) => {
       }).exec();
     })
     .then(function(moments) {
+      
+      // Serialize each moment
+      for(let i = 0; i < moments.length; i++) {
+        moments[i] = moments[i].serialize();
+      }
+      
       return res.status(201).json(moments);
     })
     .catch(function(err) {
