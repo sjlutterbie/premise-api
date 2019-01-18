@@ -102,12 +102,12 @@ router.post('/', jsonParser, jwtAuth, (req, res) => {
     .then( moment => {
       
       let lineage = moment.lineage || [];
-      lineage.push(moment.id);
+      lineage.push(moment._id);
 
-      return Moment.findByIdAndUpdate(moment.id,
+      return Moment.findByIdAndUpdate(moment._id,
         {
           lineage
-        }, {new: true}).exec();
+        }, {new: true}).populate('lineage').exec();
     })
     .then( moment => {
       return res.status(201).json(moment.serialize());
@@ -200,7 +200,7 @@ router.get('/storynetwork/:id', jsonParser, jwtAuth, (req, res) => {
 
 router.get('/storynetwork/:id/max-lineage', jsonParser, jwtAuth, (req, res) => {
   
-  Moment.find({storyNetwork: req.params.id}).exec()
+  Moment.find({storyNetwork: req.params.id}).populate('lineage').exec()
     .then(function(moments) {
       // Serialize, to attach lineageLength
       for(let i = 0; i < moments.length; i++) {
@@ -232,7 +232,7 @@ router.get('/storynetwork/:id/max-lineage', jsonParser, jwtAuth, (req, res) => {
  
 router.get('/:id', jsonParser, jwtAuth, (req, res) => {
   
-  Moment.findById(req.params.id)
+  Moment.findById(req.params.id).populate('lineage')
     .then(function(moment) {
       res.status(200).json(moment);
     })
