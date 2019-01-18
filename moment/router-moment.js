@@ -101,9 +101,15 @@ router.post('/', jsonParser, jwtAuth, (req, res) => {
     //After creation, append _id to lineages[0]
     .then( moment => {
       
+      // Update parent moment, adding child element
+      Moment.findByIdAndUpdate(moment.lineage[moment.lineage.length-1],
+      {
+        $push: { children: moment._id}
+      }).exec();
+      
       let lineage = moment.lineage || [];
       lineage.push(moment._id);
-
+      
       return Moment.findByIdAndUpdate(moment._id,
         {
           lineage
