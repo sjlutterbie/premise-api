@@ -235,6 +235,42 @@ router.get('/storynetwork/:id/max-lineage', jsonParser, jwtAuth, (req, res) => {
 
 });
 
+router.get('/switchbranch/:id', jsonParser, jwtAuth, (req, res) => {
+  
+  // Find the current moment
+  Moment.findById(req.params.id).exec()
+  .then(moment => {
+    // Select a random child
+    let children = moment.children;
+    let randIndex = Math.floor(Math.random() * children.length);
+    return children[randIndex];
+  })
+  .then(childId => {
+    // Find moments that include said child in lineage, and have no children
+    return Moment.find(
+      {
+        lineage: childId,
+        children: {$size: 0}
+      }  
+    ).populate('lineage').exec();
+  })
+  .then(moments => {
+    // Select random moment
+    let randIndex = Math.floor(Math.random() * moments.length);
+    return moments[randIndex];
+  })
+  .then(moment => {
+    
+    return res.status(201).json(moment);
+  })
+  .catch(function(err) {
+    return res.status(422).json({
+      code: 422,
+      reason: 'ValidationError',
+      message: 'Could not select child'
+    });
+  });
+});
  
 router.get('/:id', jsonParser, jwtAuth, (req, res) => {
   
