@@ -252,7 +252,7 @@ router.get('/switchbranch/:id', jsonParser, jwtAuth, (req, res) => {
         lineage: childId,
         children: {$size: 0}
       }  
-    ).exec();
+    ).populate('lineage').exec();
   })
   .then(moments => {
     // Select random moment
@@ -260,6 +260,7 @@ router.get('/switchbranch/:id', jsonParser, jwtAuth, (req, res) => {
     return moments[randIndex];
   })
   .then(moment => {
+    
     return res.status(201).json(moment);
   })
   .catch(function(err) {
